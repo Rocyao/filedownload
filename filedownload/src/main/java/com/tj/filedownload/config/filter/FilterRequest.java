@@ -33,10 +33,10 @@ public class FilterRequest extends OncePerRequestFilter implements Filter {
 
 
     public void setUserName(HttpServletRequest request){
-        String username = request.getParameter("user");
+        String token = request.getHeader("token");
         //登录状态下保存当前用户信息
-        if(!StringTools.isNullOrEmpty(username)){
-            loginService.saveLoginInfo(username);
+        if(!StringTools.isNullOrEmpty(token)){
+            loginService.saveLoginInfo(token);
         }
     }
 }

@@ -30,7 +30,6 @@ public class PermissionAspect {
 
     @Before("@annotation(com.tj.filedownload.config.annotation.RequiresPermissions)")
     public void before(JoinPoint joinPoint) throws Exception {
-        //TODO
         Set permissions = loginUser.getUserInfo().getPermissionList();
         Signature signature = joinPoint.getSignature();
         MethodSignature methodSignature = (MethodSignature) signature;

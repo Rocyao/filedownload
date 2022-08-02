@@ -36,14 +36,13 @@ public class FileDownload {
         }
     }
 
-    @GetMapping("/login")
-    public JSONObject login(@RequestParam String username){
-        loginService.generateInfo(username);
-        return CommonUtil.successJson(loginService.getUserInfo());
+    @GetMapping("/login/{username}")
+    public JSONObject login(@PathVariable String username){
+        return CommonUtil.successJson(loginService.generateToken(username));
     }
 
     @GetMapping("/logout")
     public JSONObject logout(){
-        return loginService.logout(loginService.getUserInfo().getUser());
+        return loginService.logout();
     }
 }
