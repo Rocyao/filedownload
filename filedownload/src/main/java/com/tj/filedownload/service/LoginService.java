@@ -24,12 +24,12 @@ public class LoginService {
     @Autowired
     TjSysUserMapper userMapper;
     @Autowired
-    LocalCacheUtil<String> localCacheUtil;
+    LocalCacheUtil<UserInfo> localCacheUtil;
 
     public String generateToken(String username){
         String token = UUID.randomUUID().toString().replace("-", "").substring(0,20);
         redis.hashSet("username",token, username);
-        localCacheUtil.add("token", username);
+        localCacheUtil.add("token", userMapper.getUserInfo(username));
         return token;
     }
 
@@ -43,18 +43,7 @@ public class LoginService {
     }
 
     public UserInfo getUserInfo(){
-        return getUserInfoFromCache(redis.hashGet("username", localCacheUtil.get("token")).toString());
-    }
-
-    public UserInfo getUserInfoFromCache(String user){
-        if(StringTools.isNullOrEmpty(user)){
-            return null;
-        }
-        UserInfo info = (UserInfo)redis.get(user);
-        if(info == null){
-            return null;
-        }
-        return info;
+        return localCacheUtil.get("token");
     }
 
     public JSONObject logout() {

@@ -2,7 +2,6 @@ package com.tj.filedownload.config.filter;
 
 import com.tj.filedownload.common.StringTools;
 import com.tj.filedownload.service.LoginService;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
