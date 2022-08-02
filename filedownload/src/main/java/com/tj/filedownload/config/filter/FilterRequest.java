@@ -1,6 +1,8 @@
 package com.tj.filedownload.config.filter;
 
+import com.tj.filedownload.common.StringTools;
 import com.tj.filedownload.service.LoginService;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,9 +26,17 @@ public class FilterRequest extends OncePerRequestFilter implements Filter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String user = request.getParameter("user");
-        loginService.saveLoginInfo(user);
+        setUserName(request);
         request = new ContentCachingRequestWrapper(request);
         filterChain.doFilter(request, response);
+    }
+
+
+    public void setUserName(HttpServletRequest request){
+        String username = request.getParameter("user");
+        //登录状态下保存当前用户信息
+        if(!StringTools.isNullOrEmpty(username)){
+            loginService.saveLoginInfo(username);
+        }
     }
 }

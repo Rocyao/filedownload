@@ -1,14 +1,14 @@
 package com.tj.filedownload.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.tj.filedownload.common.CommonUtil;
 import com.tj.filedownload.common.CommonUtils;
 import com.tj.filedownload.config.annotation.RequiresPermissions;
 import com.tj.filedownload.service.LoginService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -36,13 +36,14 @@ public class FileDownload {
         }
     }
 
-    @GetMapping("/login/{user}")
-    public void login(@PathVariable("user") String user){
-
+    @GetMapping("/login")
+    public JSONObject login(@RequestParam String username){
+        loginService.generateInfo(username);
+        return CommonUtil.successJson(loginService.getUserInfo());
     }
 
     @GetMapping("/logout")
-    public void logout(){
-        loginService.clearCache();
+    public JSONObject logout(){
+        return loginService.logout(loginService.getUserInfo().getUser());
     }
 }
